@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chúc Mừng 8/3 – Ngày Quốc Tế Phụ Nữ</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --rose: #e8486a;
+      --rose-light: #f7a8bb;
+      --rose-dark: #c0254a;
+      --gold: #d4a847;
+      --gold-light: #f0d080;
+      --cream: #fdf6f0;
+      --deep: #1a0a0e;
+      --pink-soft: #fce8ef;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background: #0d0508;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* ── SCENE ── */
+    #scene {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(ellipse at 50% 0%, #3a0a18 0%, #180510 50%, #0d0508 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* falling petals canvas */
+    #petalCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── CARD WRAPPER ── */
+    #cardWrap {
+      position: relative;
+      z-index: 10;
+      perspective: 1200px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card {
+      width: min(420px, 90vw);
+      height: min(560px, 76vw);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(.6, .05, .2, 1);
+      border-radius: 18px;
+    }
+
+    #cardWrap.open .card {
+      transform: rotateY(-180deg);
+    }
+
+    /* faces */
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    /* FRONT */
+    .front {
+      background: linear-gradient(145deg, #2a0810 0%, #5a1020 40%, #8b1835 70%, #2a0810 100%);
+      border: 1px solid rgba(212, 168, 71, 0.3);
+      box-shadow: 0 0 60px rgba(232, 72, 106, 0.4), 0 30px 80px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    /* decorative corner svg */
+    .corner-deco {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      opacity: 0.6;
+    }
+
+    .corner-deco.tl {
+      top: 0;
+      left: 0;
+      transform: rotate(0deg);
+    }
+
+    .corner-deco.tr {
+      top: 0;
+      right: 0;
+      transform: rotate(90deg);
+    }
+
+    .corner-deco.bl {
+      bottom: 0;
+      left: 0;
+      transform: rotate(270deg);
+    }
+
+    .corner-deco.br {
+      bottom: 0;
+      right: 0;
+      transform: rotate(180deg);
+    }
+
+    .front-rose {
+      width: 130px;
+      height: 130px;
+      animation: frontRosePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes frontRosePulse {
+
+      0%,
+      100% {
+        transform: scale(1) rotate(-5deg);
+        filter: drop-shadow(0 0 12px #e8486a88);
+      }
+
+      50% {
+        transform: scale(1.07) rotate(5deg);
+        filter: drop-shadow(0 0 24px #e8486acc);
+      }
+    }
+
+    .front-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 8vw, 3rem);
+      color: var(--gold-light);
+      text-align: center;
+      line-height: 1.1;
+      text-shadow: 0 0 20px rgba(212, 168, 71, 0.6);
+      letter-spacing: 1px;
+    }
+
+    .front-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.85rem, 3vw, 1rem);
+      color: rgba(252, 232, 239, 0.8);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    .front-hint {
+      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+      color: rgb(255, 255, 255);
+      letter-spacing: 2px;
+      animation: hintBlink 1s ease-in-out infinite;
+      margin-top: 8px;
+    }
+
+    .sign-highlight {
+      color: var(--gold-light);
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 2px 6px;
+      border-radius: 6px;
+
+      /* glow nhẹ */
+      text-shadow: 0 0 8px rgba(212, 168, 71, 0.6);
+
+      transition: all 0.3s ease;
+    }
+
+    @keyframes hintBlink {
+
+      0%,
+      100% {
+        opacity: 0.45
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    .gold-line {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* BACK */
+    .back {
+      transform: rotateY(180deg);
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* ── OPENED CONTENT ── */
+    #openContent {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: linear-gradient(160deg, #1a0308 0%, #2e0815 40%, #1a0308 100%);
+      overflow-y: auto;
+      overflow-x: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    #openContent.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* close btn */
+    #closeBtn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(232, 72, 106, 0.2);
+      border: 1px solid var(--rose-light);
+      color: var(--rose-light);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+      opacity: 0;
+    }
+
+    #openContent.visible #closeBtn {
+      opacity: 1;
+      transition: opacity 0.5s 1s;
+    }
+
+    #closeBtn:hover {
+      background: rgba(232, 72, 106, 0.4);
+    }
+
+    /* inner scroll container */
+    .inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .sec-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.2rem, 8vw, 3.2rem);
+      color: var(--gold-light);
+      text-align: center;
+      text-shadow: 0 0 30px rgba(241, 155, 26, 0.5);
+      margin-bottom: 6px;
+    }
+
+    .sec-sub {
+      text-align: center;
+      font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgb(247, 138, 163);
+      margin-bottom: 40px;
+    }
+
+    /* ── PHOTO GRID ── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .photo-grid .big {
+      grid-column: span 2;
+    }
+
+    .photo-item {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.4s;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      aspect-ratio: 1/1;
+    }
+
+    .photo-item.big {
+      aspect-ratio: 16/9;
+    }
+
+    .photo-item.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .photo-item:hover {
+      box-shadow: 0 12px 48px rgba(232, 72, 106, 0.35), 0 0 0 2px var(--rose-light);
+      transform: scale(1.02);
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26, 3, 8, 0.7) 0%, transparent 50%);
+    }
+
+    /* ── WISH CARD ── */
+    .wish-card {
+      background: linear-gradient(135deg, rgba(232, 72, 106, 0.1), rgba(212, 168, 71, 0.08));
+      border: 1px solid rgba(212, 168, 71, 0.2);
+      border-radius: 18px;
+      padding: 20px 20px;
+      margin-bottom: 40px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .wish-card.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .wish-quote {
+      font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+      color: var(--cream);
+      line-height: 1.9;
+      font-style: italic;
+      text-align: center;
+    }
+
+    .wish-quote span.highlight {
+      color: var(--gold-light);
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    .wish-sign {
+      margin-top: 20px;
+      text-align: right;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      color: var(--rose-light);
+    }
+
+    /* ── FACTS ── */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .fact-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(247, 168, 187, 0.15);
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fact-item.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .fact-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .fact-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold-light);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .fact-body {
+      font-size: 0.82rem;
+      color: rgba(252, 232, 239, 0.7);
+      line-height: 1.6;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 48px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--rose), var(--gold), var(--rose));
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .tl-item.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--rose);
+      box-shadow: 0 0 8px var(--rose);
+    }
+
+    .tl-year {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.78rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .tl-text {
+      font-size: 0.88rem;
+      color: rgba(252, 232, 239, 0.85);
+      line-height: 1.6;
+    }
+
+    /* ── ROSE BLOOMING OVERLAY ── */
+    #bloomOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bloom-rose {
+      position: absolute;
+      animation: bloomFade 2.5s ease forwards;
+      transform-origin: center;
+      font-size: 60px;
+      opacity: 0;
+    }
+
+    @keyframes bloomFade {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(-30deg);
+      }
+
+      40% {
+        opacity: 1;
+        transform: scale(1.2) rotate(5deg);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.1) rotate(10deg) translateY(-40px);
+      }
+    }
+
+    /* ── FOOTER BAR ── */
+    .footer-love {
+      text-align: center;
+      margin-top: 0px;
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
+      color: var(--rose-light);
+      opacity: 0;
+      transition: opacity 1s ease 0.5s;
+    }
+
+    .footer-love.in {
+      opacity: 1;
+    }
+
+    /* ── SPARKLE STARS ── */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      animation: sparkleFly 4s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes sparkleFly {
+      0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1);
+      }
+
+      80% {
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translateY(-90px) scale(0);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <canvas id="petalCanvas"></canvas>
+
+  <!-- CARD -->
+  <div id="scene">
+    <div id="cardWrap" onclick="openCard()">
+      <div class="card">
+
+        <!-- FRONT -->
+        <div class="face front">
+          <!-- corner deco SVG -->
+          <svg class="corner-deco tl" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 Q45 0 45 45 Q45 0 90 0" stroke="#d4a847" stroke-width="1" fill="none" />
+            <circle cx="10" cy="10" r="3" fill="#d4a847" opacity="0.6" />
+            <circle cx="25" cy="5" r="1.5" fill="#e8486a" opacity="0.7" />
+          </svg>
+
+          <svg class="corner-deco tr" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 Q45 0 45 45 Q45 0 90 0" stroke="#d4a847" stroke-width="1" fill="none" />
+            <circle cx="10" cy="10" r="3" fill="#d4a847" opacity="0.6" />
+            <circle cx="25" cy="5" r="1.5" fill="#e8486a" opacity="0.7" />
+          </svg>
+          <svg class="corner-deco bl" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 Q45 0 45 45 Q45 0 90 0" stroke="#d4a847" stroke-width="1" fill="none" />
+            <circle cx="10" cy="10" r="3" fill="#d4a847" opacity="0.6" />
+            <circle cx="25" cy="5" r="1.5" fill="#e8486a" opacity="0.7" />
+          </svg>
+          <svg class="corner-deco br" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 Q45 0 45 45 Q45 0 90 0" stroke="#d4a847" stroke-width="1" fill="none" />
+            <circle cx="10" cy="10" r="3" fill="#d4a847" opacity="0.6" />
+            <circle cx="25" cy="5" r="1.5" fill="#e8486a" opacity="0.7" />
+          </svg>
+
+          <!-- SVG Rose -->
+          <svg class="front-rose" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="rg1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f9c7d0" />
+                <stop offset="60%" stop-color="#e8486a" />
+                <stop offset="100%" stop-color="#8b1835" />
+              </radialGradient>
+              <radialGradient id="rg2" cx="40%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#f7a8bb" />
+                <stop offset="100%" stop-color="#c0254a" />
+              </radialGradient>
+            </defs>
+            <!-- petals outer -->
+            <g transform="translate(100,110)">
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(0) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(45) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(90) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(135) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(180) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(225) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(270) translate(0,-42)" />
+              <ellipse rx="28" ry="50" fill="url(#rg1)" opacity="0.85" transform="rotate(315) translate(0,-42)" />
+              <!-- inner ring -->
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(22) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(67) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(112) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(157) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(202) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(247) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(292) translate(0,-28)" />
+              <ellipse rx="20" ry="36" fill="url(#rg2)" opacity="0.9" transform="rotate(337) translate(0,-28)" />
+              <!-- core -->
+              <circle r="22" fill="#c0254a" />
+              <circle r="14" fill="#e8486a" />
+              <circle r="7" fill="#f7a8bb" />
+              <!-- leaves -->
+              <ellipse rx="12" ry="30" fill="#2d7a2d" opacity="0.8" transform="rotate(30) translate(0,55)" />
+              <ellipse rx="12" ry="30" fill="#2d7a2d" opacity="0.8" transform="rotate(150) translate(0,55)" />
+              <ellipse rx="12" ry="30" fill="#2d7a2d" opacity="0.8" transform="rotate(270) translate(0,55)" />
+              <!-- stem -->
+              <rect x="-3" y="28" width="6" height="40" rx="3" fill="#2d7a2d" opacity="0.9" />
+            </g>
+          </svg>
+
+          <div class="front-title">Ngày 8 tháng 3<br />Yêu Thương</div>
+          <div class="gold-line"></div>
+          <div class="front-sub">Ngày Quốc Tế Phụ Nữ</div>
+          <div class="front-hint">✦ Chạm để mở thiệp ✦</div>
+        </div>
+
+        <!-- BACK (mini preview, mostly replaced by full screen) -->
+        <div class="face back"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL SCREEN OPEN CONTENT -->
+  <div id="openContent">
+    <button id="closeBtn" onclick="closeCard()">✕</button>
+    <div id="bloomOverlay"></div>
+
+    <div class="inner">
+      <!-- Header -->
+      <div class="sec-title">🌹 Chúc Mừng 8/3</div>
+      <div class="sec-sub">International Women's Day <br> Tôn vinh phụ nữ</div>
+
+      <!-- Wish card -->
+      <div class="wish-card" id="wc1">
+        <div class="wish-quote">
+          Gửi đến những người phụ nữ tuyệt vời nhất <br />
+          Những người nâng đỡ cả thế giới bằng đôi tay dịu dàng,<br />
+          Soi đường bằng trái tim rực sáng,<br />
+          Và viết nên những câu chuyện đẹp nhất trong cuộc đời.<br /><br />
+          <span class="highlight"> Chúc các chị em DDC luôn rạng ngời, hạnh phúc,</span> <br />
+          <span class="highlight"> và không ngừng tỏa sáng theo cách riêng của mình. </span>
+        </div>
+        <div class="wish-sign">– Với tất cả yêu thương 💕</div>
+      </div>
+
+      <!-- Photo Grid -->
+      <div class="photo-grid" id="photoGrid">
+        <!-- Ảnh 1: big header -->
+        <div class="photo-item big" id="pi0">
+          <img src="1.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+        <!-- Ảnh 2 -->
+        <div class="photo-item" id="pi1">
+          <img src="2.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=500&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+        <!-- Ảnh 3 -->
+        <div class="photo-item" id="pi2">
+          <img src="3.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+        <!-- Ảnh 4 -->
+        <div class="photo-item" id="pi3">
+          <img src="4.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1499557354967-2b2d8910bcca?w=500&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+        <!-- Ảnh 5 -->
+        <div class="photo-item" id="pi4">
+          <img src="5.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1542596594-649edbc13630?w=500&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+        <!-- Ảnh 6: big footer -->
+        <div class="photo-item big" id="pi5">
+          <img src="6.jpg" alt="Women's Day"
+            onerror="this.src='https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?w=800&q=80'">
+          <div class="photo-overlay"></div>
+        </div>
+      </div>
+
+      <!-- Second wish -->
+      <div class="wish-card" id="wc2">
+        <div class="wish-quote">
+          <span class="highlight">Phụ nữ</span> không chỉ là nửa của bầu trời <br />
+          Họ chính là <span class="highlight">ánh sáng</span> làm cho bầu trời sáng lên,<br />
+          Là <span class="highlight">gốc rễ</span> vững chắc giữ cho cây đời đứng thẳng,<br />
+          Là <span class="highlight">bông hoa</span> nở đẹp nhất trong mọi mùa.
+        </div>
+      </div>
+
+      <!-- Facts -->
+      <div class="sec-title" style="font-size:clamp(1.6rem,5vw,2.2rem)">✨ Điều thú vị</div>
+      <div class="sec-sub" style="margin-bottom:24px">Về Ngày Quốc Tế Phụ Nữ</div>
+      <div class="facts-grid">
+        <div class="fact-item" id="fi0">
+          <div class="fact-icon">📅</div>
+          <div class="fact-title">Năm 1910</div>
+          <div class="fact-body">Clara Zetkin đề xuất thành lập Ngày Quốc Tế Phụ Nữ tại Hội nghị phụ nữ Xã hội Chủ nghĩa
+            ở Copenhagen.</div>
+        </div>
+        <div class="fact-item" id="fi1">
+          <div class="fact-icon">🌍</div>
+          <div class="fact-title">100+ Quốc gia</div>
+          <div class="fact-body">Ngày 8/3 được kỷ niệm tại hơn 100 quốc gia và vùng lãnh thổ trên toàn thế giới.</div>
+        </div>
+        <div class="fact-item" id="fi2">
+          <div class="fact-icon">🌹</div>
+          <div class="fact-title">Hoa Hồng & Tím</div>
+          <div class="fact-body">Màu tím tượng trưng cho phẩm giá, xanh lá cho hy vọng, và trắng cho sự thuần khiết – ba
+            màu biểu tượng của ngày 8/3.</div>
+        </div>
+        <div class="fact-item" id="fi3">
+          <div class="fact-icon">🏆</div>
+          <div class="fact-title">Liên Hợp Quốc</div>
+          <div class="fact-body">Từ năm 1975, Liên Hợp Quốc chính thức công nhận ngày 8/3 là Ngày Quốc Tế Phụ Nữ toàn
+            cầu.</div>
+        </div>
+        <div class="fact-item" id="fi4">
+          <div class="fact-icon">💜</div>
+          <div class="fact-title">Chủ đề 2026</div>
+          <div class="fact-body">"Accelerate Action" – Thúc đẩy hành động, hướng đến bình đẳng giới nhanh hơn, mạnh mẽ
+            hơn.</div>
+        </div>
+        <div class="fact-item" id="fi5">
+          <div class="fact-icon">⭐</div>
+          <div class="fact-title">Việt Nam</div>
+          <div class="fact-body">Tại Việt Nam, ngày 8/3 còn gắn liền với truyền thống tôn trọng và biết ơn người phụ nữ
+            sâu sắc.</div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="sec-title" style="font-size:clamp(1.6rem,5vw,2.2rem)">📜 Lịch sử</div>
+      <div class="sec-sub" style="margin-bottom:24px">Những dấu mốc quan trọng</div>
+      <div class="timeline">
+        <div class="tl-item" id="ti0">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1848</div>
+          <div class="tl-text">Hội nghị Seneca Falls – cuộc hội nghị quyền phụ nữ đầu tiên ở Mỹ, mở đầu phong trào đấu
+            tranh bình đẳng giới.</div>
+        </div>
+        <div class="tl-item" id="ti1">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1908</div>
+          <div class="tl-text">15.000 phụ nữ tuần hành ở New York đòi quyền bầu cử, giờ làm ngắn hơn và tiền lương tốt
+            hơn.</div>
+        </div>
+        <div class="tl-item" id="ti2">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1911</div>
+          <div class="tl-text">Ngày Quốc Tế Phụ Nữ đầu tiên được kỷ niệm tại Áo, Đan Mạch, Đức và Thụy Sĩ.</div>
+        </div>
+        <div class="tl-item" id="ti3">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1975</div>
+          <div class="tl-text">Liên Hợp Quốc chính thức kỷ niệm lần đầu tiên Ngày Quốc Tế Phụ Nữ 8/3.</div>
+        </div>
+        <div class="tl-item" id="ti4">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Ngày nay</div>
+          <div class="tl-text">Phụ nữ toàn cầu tiếp tục chinh phục mọi lĩnh vực: khoa học, nghệ thuật, kinh doanh, lãnh
+            đạo và hơn thế nữa.</div>
+        </div>
+      </div>
+
+      <!-- Final wish -->
+      <div class="wish-card" id="wc3">
+        <!-- <div class="wish-quote">
+          🌸 Chúc các chị em phụ nữ thân yêu<br />
+          một ngày <span class="highlight">8 tháng 3</span> thật tràn đầy hạnh phúc,<br />
+          rạng rỡ như hoa hồng đang nở,<br />
+          và mãi mãi là nguồn cảm hứng bất tận<br />
+          cho những người xung quanh. 💕
+        </div>
+        <div class="wish-sign">Happy International Women's Day 🌹</div>
+      </div> -->
+        <div class="footer-love" id="footerLove">
+          🌹✿ Làm bằng cả trái tim ✿🌹 <br>
+          Ký Tên:<span class="sign-highlight">Vinh Cute</span>
+
+        </div>
+
+      </div>
+
+      <script>
+        // ──────────────────────────────
+        // FALLING PETALS CANVAS
+        // ──────────────────────────────
+        const canvas = document.getElementById('petalCanvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+        const petals = [];
+
+        function resize() {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function randomPetal() {
+          return {
+            x: Math.random() * W,
+            y: -20,
+            size: Math.random() * 14 + 6,
+            speedY: Math.random() * 1.5 + 0.6,
+            speedX: Math.random() * 1.4 - 0.7,
+            rot: Math.random() * 360,
+            rotSpeed: Math.random() * 2 - 1,
+            alpha: Math.random() * 0.5 + 0.4,
+            color: Math.random() < 0.6
+              ? `hsl(${340 + Math.random() * 30},90%,${60 + Math.random() * 20}%)`
+              : `hsl(${40 + Math.random() * 15},80%,${70 + Math.random() * 15}%)`
+          };
+        }
+
+        for (let i = 0; i < 30; i++) {
+          const p = randomPetal();
+          p.y = Math.random() * H;
+          petals.push(p);
+        }
+
+        function drawPetal(p) {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          // teardrop petal shape
+          ctx.moveTo(0, -p.size);
+          ctx.bezierCurveTo(p.size * 0.6, -p.size * 0.6, p.size * 0.6, p.size * 0.4, 0, p.size * 0.5);
+          ctx.bezierCurveTo(-p.size * 0.6, p.size * 0.4, -p.size * 0.6, -p.size * 0.6, 0, -p.size);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          // shine
+          ctx.beginPath();
+          ctx.ellipse(-p.size * 0.1, -p.size * 0.3, p.size * 0.15, p.size * 0.35, -0.3, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,0.3)';
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function animPetals() {
+          ctx.clearRect(0, 0, W, H);
+          petals.forEach((p, i) => {
+            p.y += p.speedY;
+            p.x += p.speedX + Math.sin(p.y * 0.02) * 0.4;
+            p.rot += p.rotSpeed;
+            drawPetal(p);
+            if (p.y > H + 30) {
+              petals[i] = randomPetal();
+            }
+          });
+          requestAnimationFrame(animPetals);
+        }
+        animPetals();
+
+        // periodically add more petals
+        setInterval(() => {
+          if (petals.length < 60) petals.push(randomPetal());
+        }, 800);
+
+        // ──────────────────────────────
+        // SPARKLES on scene
+        // ──────────────────────────────
+        function addSparkle() {
+          const s = document.createElement('div');
+          s.className = 'sparkle';
+          s.style.left = Math.random() * 100 + 'vw';
+          s.style.top = Math.random() * 100 + 'vh';
+          s.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+          s.style.animationDelay = (Math.random() * 2) + 's';
+          s.style.width = s.style.height = (2 + Math.random() * 4) + 'px';
+          document.body.appendChild(s);
+          setTimeout(() => s.remove(), 6000);
+        }
+        setInterval(addSparkle, 500);
+
+        // ──────────────────────────────
+        // CARD OPEN / CLOSE
+        // ──────────────────────────────
+        let isOpen = false;
+
+        function openCard() {
+          if (isOpen) return;
+          isOpen = true;
+          document.getElementById('cardWrap').classList.add('open');
+          setTimeout(() => {
+            const oc = document.getElementById('openContent');
+            oc.classList.add('visible');
+            triggerBloom();
+            scheduleReveal();
+          }, 700);
+        }
+
+        function closeCard() {
+          isOpen = false;
+          document.getElementById('openContent').classList.remove('visible');
+          document.getElementById('cardWrap').classList.remove('open');
+        }
+
+        // ──────────────────────────────
+        // BLOOM ROSES ANIMATION
+        // ──────────────────────────────
+        function triggerBloom() {
+          const overlay = document.getElementById('bloomOverlay');
+          const positions = [
+            { x: '50%', y: '50%' }, { x: '20%', y: '30%' }, { x: '80%', y: '25%' },
+            { x: '15%', y: '70%' }, { x: '85%', y: '65%' }, { x: '50%', y: '20%' },
+            { x: '35%', y: '80%' }, { x: '65%', y: '75%' }
+          ];
+          const emojis = ['🌹', '🌸', '💐', '🌺', '🌼', '🌷', '💮', '🌻'];
+          positions.forEach((pos, i) => {
+            const el = document.createElement('div');
+            el.className = 'bloom-rose';
+            el.textContent = emojis[i % emojis.length];
+            el.style.left = pos.x;
+            el.style.top = pos.y;
+            el.style.animationDelay = (i * 0.18) + 's';
+            el.style.fontSize = (40 + Math.random() * 40) + 'px';
+            overlay.appendChild(el);
+            setTimeout(() => el.remove(), 3500);
+          });
+        }
+
+        // ──────────────────────────────
+        // SCROLL / INTERSECTION REVEAL
+        // ──────────────────────────────
+        function scheduleReveal() {
+          const all = [
+            { id: 'wc1', delay: 200 },
+            { id: 'pi0', delay: 400 },
+            { id: 'pi1', delay: 550 },
+            { id: 'pi2', delay: 650 },
+            { id: 'pi3', delay: 750 },
+            { id: 'pi4', delay: 850 },
+            { id: 'pi5', delay: 1000 },
+            { id: 'wc2', delay: 1150 },
+            { id: 'fi0', delay: 1300 },
+            { id: 'fi1', delay: 1400 },
+            { id: 'fi2', delay: 1500 },
+            { id: 'fi3', delay: 1600 },
+            { id: 'fi4', delay: 1700 },
+            { id: 'fi5', delay: 1800 },
+            { id: 'ti0', delay: 2000 },
+            { id: 'ti1', delay: 2150 },
+            { id: 'ti2', delay: 2300 },
+            { id: 'ti3', delay: 2450 },
+            { id: 'ti4', delay: 2600 },
+            { id: 'wc3', delay: 2800 },
+            { id: 'footerLove', delay: 3100 },
+          ];
+
+          // Intersection Observer for scroll-triggered items inside #openContent
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                observer.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.15, root: document.getElementById('openContent') });
+
+          all.forEach(({ id, delay }) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            setTimeout(() => {
+              el.classList.add('in');
+            }, delay);
+            observer.observe(el);
+          });
+        }
+      </script>
+</body>
+
+</html>
